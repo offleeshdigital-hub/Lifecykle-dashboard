@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lifecykel Australia — Meta Ads Strategy Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--green-dark:#2F5630;
+--green-mid:#548155;
+--green-light:#e8f0e8;
+--green-accent:#14592D;
+--text-dark:#252525;
+--bg:#FAFAFA;
+--white:#FFFFFF;
+--border:#DEDEDE;
+--gold:#C8A951;
+--red:#EA4648;
+}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text-dark);line-height:1.6;font-size:14px}
+nav{position:sticky;top:0;z-index:100;background:var(--green-dark);padding:0;display:flex;align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+nav .logo{padding:12px 24px;font-weight:700;font-size:18px;color:var(--white);letter-spacing:1px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15)}
+nav .nav-links{display:flex;overflow-x:auto;flex:1}
+nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:16px 18px;font-size:12px;font-weight:500;white-space:nowrap;transition:.2s;border-bottom:3px solid transparent}
+nav a:hover,nav a.active{color:#fff;border-bottom-color:var(--gold)}
+.hero{background:linear-gradient(135deg,var(--green-dark),var(--green-accent));color:#fff;padding:60px 40px;text-align:center}
+.hero h1{font-size:36px;font-weight:700;margin-bottom:8px}
+.hero p{font-size:16px;opacity:.85;max-width:700px;margin:0 auto}
+.hero .meta-badges{display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.hero .meta-badges span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:48px 0}
+.section-header{text-align:center;margin-bottom:36px}
+.section-header .num{display:inline-block;background:var(--green-dark);color:#fff;width:36px;height:36px;border-radius:50%;line-height:36px;font-size:14px;font-weight:700;margin-bottom:8px}
+.section-header h2{font-size:26px;font-weight:700;color:var(--green-dark);margin-bottom:4px}
+.section-header p{color:#666;font-size:14px}
+.card{background:var(--white);border-radius:12px;border:1px solid var(--border);padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.card h3{font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:12px}
+.card h4{font-size:14px;font-weight:600;color:var(--green-mid);margin-bottom:8px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.tag{display:inline-block;background:var(--green-light);color:var(--green-dark);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:500;margin:2px}
+.tag.gold{background:#fef3cd;color:#856404}
+.tag.red{background:#fde8e8;color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--green-dark);color:#fff;padding:10px 14px;text-align:left;font-weight:500}
+td{padding:10px 14px;border-bottom:1px solid var(--border)}
+tr:nth-child(even){background:#f8f8f8}
+.metric-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.metric-box{flex:1;min-width:140px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.metric-box .val{font-size:24px;font-weight:700;color:var(--green-dark)}
+.metric-box .label{font-size:11px;color:#888;margin-top:2px}
+.tree{margin:16px 0}
+.tree-node{background:var(--green-light);border-left:4px solid var(--green-dark);padding:10px 16px;margin-bottom:8px;border-radius:0 8px 8px 0;font-size:13px}
+.tree-node.l2{margin-left:28px;border-left-color:var(--green-mid)}
+.tree-node.l3{margin-left:56px;border-left-color:var(--gold);background:#fef9e7}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge.green{background:#d1fae5;color:#065f46}
+.badge.amber{background:#fef3cd;color:#92400e}
+.badge.red{background:#fee2e2;color:#991b1b}
+.divider{height:1px;background:var(--border);margin:32px 0}
+ul.check{list-style:none;padding:0}
+ul.check li{padding:4px 0;font-size:13px}
+ul.check li::before{content:"✓ ";color:var(--green-mid);font-weight:700}
+.ad-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.ad-card .ad-header{background:var(--green-dark);color:#fff;padding:12px 16px;font-size:13px;font-weight:600}
+.ad-card .ad-body{padding:20px}
+.ad-card .ad-body .angle{font-size:12px;color:var(--green-mid);font-weight:600;text-transform:uppercase;margin-bottom:6px}
+.ad-card .copy-block{background:#f8f8f8;border-radius:8px;padding:14px;margin-top:12px;font-size:13px}
+.ad-card .copy-block .field{margin-bottom:8px}
+.ad-card .copy-block .field-label{font-size:11px;font-weight:600;color:var(--green-dark);text-transform:uppercase;margin-bottom:2px}
+.img-placeholder{background:var(--green-light);border:2px dashed var(--border);border-radius:8px;height:200px;display:flex;align-items:center;justify-content:center;color:#999;font-size:13px;margin-bottom:12px}
+.tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--border)}
+.tabs button{background:none;border:none;padding:10px 20px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;color:#888;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.2s}
+.tabs button.active{color:var(--green-dark);border-bottom-color:var(--green-dark);font-weight:600}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.flow-step{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.flow-step .step-num{width:32px;height:32px;border-radius:50%;background:var(--green-dark);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.flow-step .step-text{font-size:13px}
+@media(max-width:768px){
+.grid-2,.grid-3,.grid-5{grid-template-columns:1fr}
+.hero h1{font-size:24px}
+nav .nav-links{gap:0}
+}
+@media print{nav{position:relative}section{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo">LIFECYKEL</div>
+<div class="nav-links">
+<a href="#research" class="active">Research</a>
+<a href="#architecture">Campaign Architecture</a>
+<a href="#budget">Budget & Scaling</a>
+<a href="#testing">Creative Testing</a>
+<a href="#concepts">Creative Concepts</a>
+<a href="#copy">Ad Copy</a>
+</div>
+</nav>
+
+<div class="hero">
+<h1>Lifecykel Australia — Meta Ads Strategy</h1>
+<p>Full-funnel Meta advertising strategy for Australia's #1 functional mushroom brand. Five hero products. One unstoppable growth engine.</p>
+<div class="meta-badges">
+<span>$20,000/mo Starting Budget</span>
+<span>2.5x ROAS Target</span>
+<span>Australia DTC</span>
+<span>5 Hero Products</span>
+</div>
+</div>
+
+<!-- ==================== SECTION 1: RESEARCH ==================== -->
+<section id="research">
+<div class="container">
+<div class="section-header">
+<div class="num">1</div>
+<h2>Client & Market Research</h2>
+<p>Audience segmentation, competitive landscape, and strategic positioning</p>
+</div>
+
+<!-- Audience Segments -->
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Target Audience Segments</h3>
+<div class="grid-2">
+
+<div class="card">
+<h3>Segment 1: The Biohacker</h3>
+<h4>Demographics</h4>
+<p style="font-size:13px">Male, 25–40, urban professional, HHI $80k–$150k+. Tech-savvy, early adopter. Follows Andrew Huberman, Dave Asprey, Peter Attia.</p>
+<h4>Psychographics</h4>
+<p style="font-size:13px">Obsessed with optimising performance. Stacks supplements strategically. Views body as a system to upgrade. Data-driven purchasing decisions.</p>
+<h4>Pain Points</h4>
+<p style="font-size:13px">Brain fog during deep work. Afternoon energy crashes. Wants edge without pharmaceuticals. Skeptical of brands without science backing.</p>
+<h4>Desires</h4>
+<p style="font-size:13px">Sustained mental clarity. Clean, jitter-free energy. Products that compound over time. Brand they can trust and geek out on.</p>
+<h4>Product Mapping</h4>
+<div><span class="tag">Lion's Mane</span><span class="tag">Cordyceps</span><span class="tag">Shilajit</span><span class="tag gold">Liposomal NR+</span></div>
+</div>
+
+<div class="card">
+<h3>Segment 2: The Wellness-Conscious Woman</h3>
+<h4>Demographics</h4>
+<p style="font-size:13px">Female, 28–45, health-aware, mid-to-high income. Yoga/pilates practitioner. Follows wellness influencers on Instagram. Shops at farmers' markets.</p>
+<h4>Psychographics</h4>
+<p style="font-size:13px">Values natural, clean-label products. Prefers holistic over synthetic. Community-oriented. Will research ingredients before purchasing.</p>
+<h4>Pain Points</h4>
+<p style="font-size:13px">Stress and overwhelm from juggling career/family. Poor sleep quality. Wants to age well without harsh chemicals. Struggles to find trustworthy brands.</p>
+<h4>Desires</h4>
+<p style="font-size:13px">Inner calm and balance. Glowing health from the inside out. Rituals that feel nourishing, not clinical. Products that align with values.</p>
+<h4>Product Mapping</h4>
+<div><span class="tag">Reishi</span><span class="tag">Lion's Mane</span><span class="tag gold">Liposomal NR+</span></div>
+</div>
+
+<div class="card">
+<h3>Segment 3: The Active Performer</h3>
+<h4>Demographics</h4>
+<p style="font-size:13px">Male/Female, 22–38, gym-goer or endurance athlete. Spends $150+/mo on supplements. Follows fitness creators. Competitive nature.</p>
+<h4>Psychographics</h4>
+<p style="font-size:13px">Performance is identity. Always chasing PRs. Open to natural ergogenic aids. Wants clean labels they can trust in competition.</p>
+<h4>Pain Points</h4>
+<p style="font-size:13px">Recovery takes too long. Pre-workouts are jittery and crash-prone. Wants sustained energy without synthetic stimulants. Plateau frustration.</p>
+<h4>Desires</h4>
+<p style="font-size:13px">Natural energy that doesn't spike and crash. Faster recovery. Endurance gains. A supplement stack that actually works and is competition-safe.</p>
+<h4>Product Mapping</h4>
+<div><span class="tag">Cordyceps</span><span class="tag">Shilajit</span><span class="tag">Lion's Mane</span></div>
+</div>
+
+<div class="card">
+<h3>Segment 4: The Longevity Seeker</h3>
+<h4>Demographics</h4>
+<p style="font-size:13px">Male/Female, 40–60, established professional or retiree. HHI $100k+. Reads longevity research. May already take NMN/NAD+ or resveratrol.</p>
+<h4>Psychographics</h4>
+<p style="font-size:13px">Proactive about aging. Willing to invest in premium health. Trusts science and clinical backing. Values TGA listings and third-party testing.</p>
+<h4>Pain Points</h4>
+<p style="font-size:13px">Declining energy and cognitive sharpness. Concerned about age-related cellular decline. Current NAD+ supplements are expensive capsules with poor absorption.</p>
+<h4>Desires</h4>
+<p style="font-size:13px">Reverse the clock at a cellular level. Stay sharp, vital, and energised into their 60s and beyond. Premium products that deliver real results.</p>
+<h4>Product Mapping</h4>
+<div><span class="tag gold">Liposomal NR+</span><span class="tag">Shilajit</span><span class="tag">Lion's Mane</span><span class="tag">Reishi</span></div>
+</div>
+
+<div class="card">
+<h3>Segment 5: The Curious Newcomer</h3>
+<h4>Demographics</h4>
+<p style="font-size:13px">Male/Female, 22–35. Heard about functional mushrooms on a podcast or TikTok. First-time buyer. Mid income. Open-minded but skeptical.</p>
+<h4>Psychographics</h4>
+<p style="font-size:13px">Wellness-curious but not deep in the space. Influenced by social proof and UGC. Price-sensitive on first purchase. Needs education before converting.</p>
+<h4>Pain Points</h4>
+<p style="font-size:13px">Overwhelmed by options. Doesn't know which mushroom does what. Worried about taste or weird side effects. Needs reassurance from real people.</p>
+<h4>Desires</h4>
+<p style="font-size:13px">Simple entry point into functional mushrooms. Clear guidance on what to try first. Low-risk way to test. Social proof and transparent ingredient info.</p>
+<h4>Product Mapping</h4>
+<div><span class="tag">Lion's Mane</span><span class="tag">Cordyceps</span><span class="tag">Reishi</span></div>
+</div>
+
+<div class="card">
+<h3>Segment 6: The Stressed Professional</h3>
+<h4>Demographics</h4>
+<p style="font-size:13px">Male/Female, 30–50, corporate or startup founder. Works 50+ hours/week. HHI $100k+. Drinks 3+ coffees daily. Time-poor but health-aware.</p>
+<h4>Psychographics</h4>
+<p style="font-size:13px">Performance-driven but burning out. Knows they need to manage stress but won't slow down. Wants solutions that integrate into existing routine, not add complexity.</p>
+<h4>Pain Points</h4>
+<p style="font-size:13px">Chronic stress, poor sleep, cognitive fatigue. Coffee dependency. Can't switch off at night. Needs something that works fast and fits into a busy schedule.</p>
+<h4>Desires</h4>
+<p style="font-size:13px">Mental clarity without more caffeine. Ability to wind down at night. Sustainable energy through long days. Simple daily ritual — drop, stir, go.</p>
+<h4>Product Mapping</h4>
+<div><span class="tag">Lion's Mane</span><span class="tag">Reishi</span><span class="tag">Cordyceps</span><span class="tag">Shilajit</span></div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Competitor Analysis -->
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Competitive Landscape</h3>
+<div class="card">
+<table>
+<tr><th>Brand</th><th>Format</th><th>Price Range</th><th>Strengths</th><th>Weaknesses</th><th>Threat Level</th></tr>
+<tr><td><strong>SuperFeast</strong></td><td>Powder</td><td>$44–$70</td><td>Cult following, Di Dao sourcing, Byron Bay brand story</td><td>No liquid extracts, higher price, limited innovation</td><td><span class="badge amber">Medium</span></td></tr>
+<tr><td><strong>Teelixir</strong></td><td>Powder</td><td>$40–$67</td><td>Certified organic, accessible price, wide range</td><td>Less brand recognition, no liquid format</td><td><span class="badge amber">Medium</span></td></tr>
+<tr><td><strong>Four Sigmatic</strong></td><td>Coffee blends</td><td>$30–$55</td><td>Convenience, global brand, mushroom coffee format</td><td>Not AU-focused, lower potency blends</td><td><span class="badge green">Low</span></td></tr>
+<tr><td><strong>Real Mushrooms</strong></td><td>Capsules</td><td>$40–$65</td><td>100% fruiting body, science-backed, &lt;2% starch</td><td>North American focus, no AU presence</td><td><span class="badge green">Low</span></td></tr>
+<tr><td><strong>DIRTEA</strong></td><td>Powder</td><td>$50–$80</td><td>Strong influencer marketing, premium packaging</td><td>UK-based, limited AU traction</td><td><span class="badge green">Low</span></td></tr>
+</table>
+</div>
+
+<div class="divider"></div>
+
+<!-- Differentiation -->
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Lifecykel's Competitive Moat</h3>
+<div class="grid-3">
+<div class="card" style="border-top:3px solid var(--green-dark)">
+<h3>Liquid Extract Format</h3>
+<p style="font-size:13px">Double-extraction process delivers superior bioavailability vs. powders. Less than 1.5% starch vs. 20–70% in competitor powders. Drop it in your coffee and go.</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green-dark)">
+<h3>Kakadu Plum Infusion</h3>
+<p style="font-size:13px">Uniquely Australian ingredient — one of nature's richest vitamin C sources. No competitor offers this. A powerful differentiator in ad creative.</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green-dark)">
+<h3>TGA-Listed & AU-Made</h3>
+<p style="font-size:13px">Regulatory credibility competitors can't match. Manufactured in licensed AU facilities. Third-party tested every batch. Trust signals that convert.</p>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Customer Language -->
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Customer Language & Purchase Drivers</h3>
+<div class="grid-2">
+<div class="card">
+<h3>Words Customers Use</h3>
+<ul class="check">
+<li>"Finally something that actually works"</li>
+<li>"I can feel the difference in my focus"</li>
+<li>"No jitters, no crash — just clean energy"</li>
+<li>"I sleep so much deeper now"</li>
+<li>"Tastes way better than I expected"</li>
+<li>"My morning ritual isn't complete without it"</li>
+<li>"I've tried powders — this is next level"</li>
+<li>"Love that it's Australian made"</li>
+</ul>
+</div>
+<div class="card">
+<h3>Purchase Triggers</h3>
+<h4>First Purchase</h4>
+<ul class="check">
+<li>Podcast recommendation or influencer mention</li>
+<li>Specific health concern (focus, sleep, energy)</li>
+<li>Frustration with current supplement not working</li>
+<li>Social proof — reviews + star ratings</li>
+</ul>
+<h4 style="margin-top:12px">Repeat Purchase</h4>
+<ul class="check">
+<li>Noticeable results after 2–4 weeks of use</li>
+<li>Becomes embedded in daily ritual</li>
+<li>Subscription discount (20% off)</li>
+<li>Expanding stack — tries one, then adds more</li>
+</ul>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ==================== SECTION 2: CAMPAIGN ARCHITECTURE ==================== -->
+<section id="architecture" style="background:var(--white)">
+<div class="container">
+<div class="section-header">
+<div class="num">2</div>
+<h2>Campaign Architecture</h2>
+<p>Account structure, naming conventions, targeting strategy, and operational management</p>
+</div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Account Structure Overview</h3>
+<div class="card">
+<p style="font-size:13px;margin-bottom:16px"><strong>Naming Convention:</strong> <code>[Objective]_[Product]_[Funnel Stage]_[Audience]_[Date]</code></p>
+
+<div class="tree-node"><strong>CAMPAIGN TIER 1 — PROSPECTING (TOF)</strong> — Objective: Sales / Advantage+ Shopping</div>
+<div class="tree-node l2">C1: SALES_LionsMane_TOF_Broad_2024</div>
+<div class="tree-node l3">Ad Set: AU_Broad_18-65_AllGenders</div>
+<div class="tree-node l3">Ad Set: AU_Interest_Nootropics_Biohacking</div>
+<div class="tree-node l3">Ad Set: AU_Interest_Yoga_NaturalHealth</div>
+<div class="tree-node l2">C2: SALES_Cordyceps_TOF_Broad_2024</div>
+<div class="tree-node l3">Ad Set: AU_Broad_18-55_AllGenders</div>
+<div class="tree-node l3">Ad Set: AU_Interest_Fitness_PreWorkout</div>
+<div class="tree-node l2">C3: SALES_Reishi_TOF_Broad_2024</div>
+<div class="tree-node l3">Ad Set: AU_Broad_25-55_AllGenders</div>
+<div class="tree-node l3">Ad Set: AU_Interest_Sleep_Stress_Wellness</div>
+<div class="tree-node l2">C4: SALES_Shilajit_TOF_Broad_2024</div>
+<div class="tree-node l3">Ad Set: AU_Broad_25-50_Male</div>
+<div class="tree-node l3">Ad Set: AU_Interest_Vitality_Testosterone_Fitness</div>
+<div class="tree-node l2">C5: SALES_LipoNR_TOF_Broad_2024</div>
+<div class="tree-node l3">Ad Set: AU_Broad_35-65_AllGenders</div>
+<div class="tree-node l3">Ad Set: AU_Interest_Longevity_AntiAging_NAD</div>
+
+<div style="margin-top:16px"></div>
+<div class="tree-node"><strong>CAMPAIGN TIER 2 — RETARGETING (MOF)</strong> — Objective: Sales</div>
+<div class="tree-node l2">C6: SALES_AllProducts_MOF_Retarget_2024</div>
+<div class="tree-node l3">Ad Set: AU_Retarget_WebVisitors_7d</div>
+<div class="tree-node l3">Ad Set: AU_Retarget_WebVisitors_8-30d</div>
+<div class="tree-node l3">Ad Set: AU_Retarget_IGFBEngagers_30d</div>
+<div class="tree-node l3">Ad Set: AU_Retarget_VideoViewers_50pct_30d</div>
+
+<div style="margin-top:16px"></div>
+<div class="tree-node"><strong>CAMPAIGN TIER 3 — RETENTION (BOF)</strong> — Objective: Sales</div>
+<div class="tree-node l2">C7: SALES_AllProducts_BOF_Retention_2024</div>
+<div class="tree-node l3">Ad Set: AU_PastBuyers_30-90d_CrossSell</div>
+<div class="tree-node l3">Ad Set: AU_PastBuyers_90-180d_Winback</div>
+<div class="tree-node l3">Ad Set: AU_Subscription_Lapsed</div>
+
+<div style="margin-top:16px"></div>
+<div class="tree-node"><strong>CAMPAIGN TIER 4 — ASC (ADVANTAGE+ SHOPPING)</strong></div>
+<div class="tree-node l2">C8: ASC_AllProducts_Evergreen_2024</div>
+<div class="tree-node l3">Existing Customer Budget Cap: 20%</div>
+<div class="tree-node l3">All top-performing creatives from Tiers 1–3 fed in</div>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Targeting Strategy & Exclusions</h3>
+<div class="grid-2">
+<div class="card">
+<h3>Targeting Approach</h3>
+<ul class="check">
+<li><strong>TOF Broad:</strong> 18–65, Australia-wide, no interest targeting — let Meta's algorithm optimise</li>
+<li><strong>TOF Interest:</strong> Layered interests per product vertical as backup if broad underperforms</li>
+<li><strong>MOF:</strong> Custom audiences from pixel events (ViewContent, ATC, IC) + engagement audiences</li>
+<li><strong>BOF:</strong> Purchase-based custom audiences segmented by recency</li>
+<li><strong>ASC:</strong> Broad with existing customer cap at 20% to prioritise new customer acquisition</li>
+</ul>
+</div>
+<div class="card">
+<h3>Exclusion Logic</h3>
+<ul class="check">
+<li><strong>TOF campaigns:</strong> Exclude all purchasers (180 days) + website visitors (30 days)</li>
+<li><strong>MOF campaigns:</strong> Exclude purchasers (30 days) to avoid wasting retargeting spend</li>
+<li><strong>BOF cross-sell:</strong> Exclude buyers of the specific product being advertised</li>
+<li><strong>All campaigns:</strong> Exclude employees, existing subscribers (where possible via customer list)</li>
+<li><strong>Geo exclusions:</strong> None — all of Australia included. No state-level restrictions needed.</li>
+</ul>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Operational Management</h3>
+<div class="grid-3">
+<div class="card">
+<h3>Daily (15 min)</h3>
+<ul class="check">
+<li>Check delivery status & pacing</li>
+<li>Flag any CPM spikes or delivery issues</li>
+<li>Monitor for ad rejections</li>
+<li>Review ROAS by campaign tier</li>
+</ul>
+</div>
+<div class="card">
+<h3>Weekly (1 hour)</h3>
+<ul class="check">
+<li>Creative performance review — identify winners/losers</li>
+<li>Kill underperformers (see testing framework)</li>
+<li>Shift budget to top performers</li>
+<li>Launch new creative tests</li>
+<li>Update audience exclusions</li>
+</ul>
+</div>
+<div class="card">
+<h3>Monthly (2 hours)</h3>
+<ul class="check">
+<li>Full account audit — structure, spend, ROAS</li>
+<li>Creative playbook update</li>
+<li>Audience saturation check (frequency analysis)</li>
+<li>Budget reallocation across products</li>
+<li>Report to stakeholders</li>
+</ul>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ==================== SECTION 3: BUDGET & SCALING ==================== -->
+<section id="budget">
+<div class="container">
+<div class="section-header">
+<div class="num">3</div>
+<h2>Budget Allocation & Scaling Plan</h2>
+<p>How we distribute $20,000/month across products, funnel stages, and testing — with clear decision thresholds</p>
+</div>
+
+<div class="metric-row">
+<div class="metric-box"><div class="val">$20,000</div><div class="label">Monthly Budget</div></div>
+<div class="metric-box"><div class="val">$667</div><div class="label">Daily Budget</div></div>
+<div class="metric-box"><div class="val">2.5x</div><div class="label">Min ROAS Target</div></div>
+<div class="metric-box"><div class="val">$50,000</div><div class="label">Min Monthly Revenue Target</div></div>
+<div class="metric-box"><div class="val">Uncapped</div><div class="label">Scale Ceiling</div></div>
+</div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Initial Product Budget Split</h3>
+<div class="card">
+<table>
+<tr><th>Product</th><th>% of Budget</th><th>Monthly $</th><th>Daily $</th><th>Rationale</th></tr>
+<tr><td><strong>Lion's Mane</strong></td><td>30%</td><td>$6,000</td><td>$200</td><td>Hero product, largest review base (1,754), broadest audience appeal, highest search volume</td></tr>
+<tr><td><strong>Cordyceps</strong></td><td>20%</td><td>$4,000</td><td>$133</td><td>Strong fitness angle, clear USP (energy/pre-workout), 4.9★ with 461 reviews</td></tr>
+<tr><td><strong>Shilajit</strong></td><td>20%</td><td>$4,000</td><td>$133</td><td>Premium price ($92) = higher AOV, trending category, strong male skew for targeting</td></tr>
+<tr><td><strong>Reishi</strong></td><td>15%</td><td>$3,000</td><td>$100</td><td>Sleep/stress is massive market, complements Lion's Mane for stack upsell</td></tr>
+<tr><td><strong>Liposomal NR+</strong></td><td>15%</td><td>$3,000</td><td>$100</td><td>Premium product ($74.95), niche but high-intent longevity audience, TGA-listed</td></tr>
+</table>
+</div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Funnel Stage Allocation (within each product budget)</h3>
+<div class="card">
+<table>
+<tr><th>Funnel Stage</th><th>% of Product Budget</th><th>Purpose</th></tr>
+<tr><td><strong>TOF — Prospecting</strong></td><td>60%</td><td>Net-new customer acquisition via broad + interest targeting</td></tr>
+<tr><td><strong>MOF — Retargeting</strong></td><td>20%</td><td>Re-engage warm audiences — site visitors, video viewers, engagers</td></tr>
+<tr><td><strong>BOF — Retention</strong></td><td>10%</td><td>Cross-sell and winback past customers</td></tr>
+<tr><td><strong>Testing Reserve</strong></td><td>10%</td><td>New creative and audience tests — rotated weekly</td></tr>
+</table>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Decision Framework — Scale, Hold, or Kill</h3>
+<div class="grid-3">
+<div class="card" style="border-top:4px solid #059669">
+<h3 style="color:#059669">🟢 SCALE — Increase Budget 20%</h3>
+<p style="font-size:13px;margin-bottom:8px">Trigger when ALL conditions met for 3+ consecutive days:</p>
+<ul class="check">
+<li>ROAS ≥ 3.0x</li>
+<li>CPA ≤ $35</li>
+<li>CTR ≥ 1.5%</li>
+<li>Frequency < 2.5</li>
+<li>Spend has exited learning phase</li>
+</ul>
+<p style="font-size:12px;color:#666;margin-top:8px"><strong>Action:</strong> Increase daily budget by 20% max. Never more than once every 3 days. Monitor for 48hrs post-increase.</p>
+</div>
+<div class="card" style="border-top:4px solid #d97706">
+<h3 style="color:#d97706">🟡 HOLD — Monitor Closely</h3>
+<p style="font-size:13px;margin-bottom:8px">When performance is acceptable but not scalable:</p>
+<ul class="check">
+<li>ROAS between 2.0x – 2.9x</li>
+<li>CPA between $35 – $50</li>
+<li>CTR between 1.0% – 1.5%</li>
+<li>Frequency between 2.5 – 3.5</li>
+</ul>
+<p style="font-size:12px;color:#666;margin-top:8px"><strong>Action:</strong> Test new creative variants. Adjust audience if frequency rising. Do not increase budget. Review in 5 days.</p>
+</div>
+<div class="card" style="border-top:4px solid var(--red)">
+<h3 style="color:var(--red)">🔴 KILL — Pause & Diagnose</h3>
+<p style="font-size:13px;margin-bottom:8px">Trigger when ANY condition met after learning phase:</p>
+<ul class="check">
+<li>ROAS < 2.0x for 5+ consecutive days</li>
+<li>CPA > $60</li>
+<li>CTR < 0.8%</li>
+<li>Frequency > 4.0</li>
+<li>$0 revenue after $150+ spend</li>
+</ul>
+<p style="font-size:12px;color:#666;margin-top:8px"><strong>Action:</strong> Pause ad set immediately. Diagnose: is it creative fatigue, audience saturation, or landing page issue? Reallocate budget to winners.</p>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Scaling Methodology — Maintaining Efficiency at Higher Spend</h3>
+<div class="card">
+<div class="grid-2">
+<div>
+<h4>Horizontal Scaling (Primary)</h4>
+<ul class="check">
+<li>Duplicate winning ad sets with fresh audiences</li>
+<li>Launch new creative angles on proven audiences</li>
+<li>Expand to Lookalike audiences (1%, 2%, 5%)</li>
+<li>Test new product bundles / value packs</li>
+<li>Layer in ASC campaigns with proven winners</li>
+</ul>
+</div>
+<div>
+<h4>Vertical Scaling (Secondary)</h4>
+<ul class="check">
+<li>Increase budget by max 20% per 3-day period</li>
+<li>Only on ad sets with 3+ days above 3.0x ROAS</li>
+<li>Monitor CPA for 48hrs after each increase</li>
+<li>If CPA rises >20%, pause increase and revert</li>
+<li>Set campaign-level spend limits as safety net</li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ==================== SECTION 4: CREATIVE TESTING ==================== -->
+<section id="testing" style="background:var(--white)">
+<div class="container">
+<div class="section-header">
+<div class="num">4</div>
+<h2>Creative Testing Framework</h2>
+<p>A repeatable system for testing, iterating, and scaling creative — not a list of ideas</p>
+</div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Weekly Creative Cadence</h3>
+<div class="card">
+<div class="flow-step"><div class="step-num">1</div><div class="step-text"><strong>Monday — Brief & Concepting</strong><br>Review previous week's data. Identify winning angles, formats, and hooks. Brief 4–6 new creatives (mix of static + video) based on learnings.</div></div>
+<div class="flow-step"><div class="step-num">2</div><div class="step-text"><strong>Tuesday–Wednesday — Production</strong><br>Design team produces assets. Static ads in 1080×1080, 1080×1350, 1080×1920. Video ads in 9:16 and 1:1. All variants follow brand guidelines.</div></div>
+<div class="flow-step"><div class="step-num">3</div><div class="step-text"><strong>Thursday — Launch</strong><br>Upload new creatives into testing ad sets. Each test gets $20–$30/day budget. One variable isolated per test (hook, visual, CTA, or angle).</div></div>
+<div class="flow-step"><div class="step-num">4</div><div class="step-text"><strong>Friday–Sunday — Data Collection</strong><br>Let tests run untouched. Minimum 1,000 impressions before evaluating. No changes during this window.</div></div>
+<div class="flow-step"><div class="step-num">5</div><div class="step-text"><strong>Monday — Evaluation & Decision</strong><br>Apply Kill/Hold/Scale criteria. Winners move to scaling campaigns. Losers are paused. Insights logged in Creative Playbook.</div></div>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Variable Isolation — Testing Sequence</h3>
+<div class="card">
+<p style="font-size:13px;margin-bottom:12px">We test one variable at a time in this priority order. Each variable is tested across 2–3 variants with all other elements held constant.</p>
+<table>
+<tr><th>Priority</th><th>Variable</th><th>What We're Testing</th><th>Min. Spend Before Decision</th></tr>
+<tr><td>1st</td><td><strong>Hook / Opening</strong></td><td>First 3 seconds of video or headline of static</td><td>$50 per variant</td></tr>
+<tr><td>2nd</td><td><strong>Creative Angle</strong></td><td>The core message/positioning (e.g., energy vs. focus vs. ritual)</td><td>$75 per variant</td></tr>
+<tr><td>3rd</td><td><strong>Format</strong></td><td>Static vs. video vs. carousel vs. UGC</td><td>$75 per variant</td></tr>
+<tr><td>4th</td><td><strong>Visual Style</strong></td><td>Lifestyle vs. product-hero vs. ingredient close-up vs. testimonial</td><td>$50 per variant</td></tr>
+<tr><td>5th</td><td><strong>Copy Length</strong></td><td>Short (2 lines) vs. medium (paragraph) vs. long (story format)</td><td>$50 per variant</td></tr>
+<tr><td>6th</td><td><strong>CTA</strong></td><td>Shop Now vs. Learn More vs. Get Yours vs. Try Risk-Free</td><td>$40 per variant</td></tr>
+</table>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Creative Evaluation Metrics by Stage</h3>
+<div class="grid-2">
+<div class="card">
+<h3>Stage 1: Attention (First 24–48hrs)</h3>
+<table>
+<tr><th>Metric</th><th>Good</th><th>Kill</th></tr>
+<tr><td>CTR (link)</td><td>≥ 1.5%</td><td>< 0.8%</td></tr>
+<tr><td>Hook Rate (video)</td><td>≥ 30%</td><td>< 15%</td></tr>
+<tr><td>Thumb-Stop Ratio</td><td>≥ 25%</td><td>< 12%</td></tr>
+<tr><td>CPM</td><td>< $25</td><td>> $45</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Stage 2: Conversion (Day 3–7)</h3>
+<table>
+<tr><th>Metric</th><th>Good</th><th>Kill</th></tr>
+<tr><td>ROAS</td><td>≥ 2.5x</td><td>< 1.5x</td></tr>
+<tr><td>CPA</td><td>≤ $35</td><td>> $55</td></tr>
+<tr><td>ATC Rate</td><td>≥ 5%</td><td>< 2%</td></tr>
+<tr><td>Purchase Rate</td><td>≥ 2%</td><td>< 0.5%</td></tr>
+</table>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Monthly Creative Volume</h3>
+<div class="card">
+<table>
+<tr><th>Product</th><th>New Statics/wk</th><th>New Videos/wk</th><th>Monthly Total</th></tr>
+<tr><td>Lion's Mane</td><td>2–3</td><td>1–2</td><td>12–20</td></tr>
+<tr><td>Cordyceps</td><td>2</td><td>1</td><td>12</td></tr>
+<tr><td>Shilajit</td><td>2</td><td>1</td><td>12</td></tr>
+<tr><td>Reishi</td><td>1–2</td><td>1</td><td>8–12</td></tr>
+<tr><td>Liposomal NR+</td><td>1–2</td><td>1</td><td>8–12</td></tr>
+<tr><td colspan="3" style="text-align:right;font-weight:600">Total Monthly</td><td><strong>52–68 new creatives</strong></td></tr>
+</table>
+</div>
+
+<div class="divider"></div>
+
+<h3 style="font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Fatigue Management & Creative Playbook</h3>
+<div class="grid-2">
+<div class="card">
+<h3>Fatigue Signals</h3>
+<ul class="check">
+<li><strong>Frequency > 3.0</strong> — audience seeing ads too often</li>
+<li><strong>CTR declining 20%+</strong> week-over-week</li>
+<li><strong>CPA rising 25%+</strong> with no external factors</li>
+<li><strong>Negative comments increasing</strong> on ad posts</li>
+</ul>
+<h4 style="margin-top:12px">Response Protocol</h4>
+<ul class="check">
+<li>Swap creative immediately — don't wait for weekly cycle</li>
+<li>Broaden audience to reduce frequency pressure</li>
+<li>Rotate ad set off for 7 days, then relaunch with fresh creative</li>
+<li>Promote next-best performer from testing pipeline</li>
+</ul>
+</div>
+<div class="card">
+<h3>Creative Playbook Documentation</h3>
+<p style="font-size:13px;margin-bottom:10px">Every test result is logged in a shared Google Sheet with these fields:</p>
+<ul class="check">
+<li>Date launched / Date killed or scaled</li>
+<li>Product, Audience Segment, Funnel Stage</li>
+<li>Creative angle, Hook, Format, Visual style</li>
+<li>Primary metrics: CTR, CPA, ROAS, Hook Rate</li>
+<li>Outcome: Kill / Iterate / Scale</li>
+<li>Key Insight (one sentence takeaway)</li>
+<li>Screenshot of the creative for reference</li>
+</ul>
+<p style="font-size:12px;color:#666;margin-top:8px">This playbook becomes the strategic asset. Over time, it reveals exactly which angles, hooks, and formats resonate for each product and audience — eliminating guesswork.</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ==================== SECTION 5: CREATIVE CONCEPTS ==================== -->
+<section id="concepts">
+<div class="container">
+<div class="section-header">
+<div class="num">5</div>
+<h2>Creative Concepts</h2>
+<p>The complete Day 1 ad set across all 5 products — every static and video concept we'd launch</p>
+</div>
+
+<!-- Product Tabs -->
+<div class="tabs" id="productTabs">
+<button class="active" onclick="switchTab('lionsmane')">Lion's Mane</button>
+<button onclick="switchTab('cordyceps')">Cordyceps</button>
+<button onclick="switchTab('reishi')">Reishi</button>
+<button onclick="switchTab('shilajit')">Shilajit</button>
+<button onclick="switchTab('liponr')">Liposomal NR+</button>
+</div>
+
+<!-- LION'S MANE -->
+<div class="tab-content active" id="tab-lionsmane">
+<h3 style="font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Lion's Mane — 6 Creative Concepts</h3>
+
+<div class="ad-card">
+<div class="ad-header">LM-01 | Static | "The Brain's Best Friend" — Problem/Solution</div>
+<div class="ad-body">
+<div class="angle">Angle: Cognitive Performance</div>
+<img src="images/lm01.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Lion's Mane - Brain's Best Friend">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Split-screen — left side: cluttered desk, foggy morning coffee, unfocused eyes. Right side: clean workspace, Lifecykel Lion's Mane bottle hero-lit, sharp focus. Warm natural lighting, earthy tones. Kakadu Plum callout badge in corner.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Your brain is running on 60%. Here's the missing 40%."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Messaging Strategy:</strong> Targets the biohacker and stressed professional. Positions Lion's Mane as the daily upgrade they didn't know they needed. Leans into the "before/after" clarity transformation.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 6 (Stressed Professional)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-02 | Video (15s) | "Morning Ritual" — Lifestyle Integration</div>
+<div class="ad-body">
+<div class="angle">Angle: Daily Ritual</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Close-up of dropper releasing golden liquid extract into steaming coffee. ASMR-style audio. Text overlay: "The 5-second upgrade that changed my mornings."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Dropper into coffee close-up<br>3–7s: Person takes first sip, closes eyes, smiles — cut to them crushing work at desk<br>7–12s: Product hero shot with Kakadu Plum callout + "Australia's #1 Lion's Mane"<br>12–15s: End card — "Drop. Stir. Focus." + Shop Now CTA</p>
+<p style="font-size:13px;margin-top:8px"><strong>Visual Direction:</strong> Warm morning light, cozy kitchen setting, organic textures. Person is relatable (not model-perfect). Earthy colour grading matching Lifecykel brand.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 2 (Wellness Woman), 5 (Curious Newcomer), 6 (Stressed Professional)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-03 | Static | "1,754 Five-Star Reviews Can't Be Wrong" — Social Proof</div>
+<div class="ad-body">
+<div class="angle">Angle: Trust & Social Proof</div>
+<img src="images/lm03.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Lion's Mane - Social Proof">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Clean white background. Product centred. Surrounded by floating 5-star review snippets — real customer quotes. Large "4.8★" rating prominent. "TGA Listed" and "Made in Australia" trust badges at bottom.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "1,754 Australians already know. Do you?"</p>
+<p style="font-size:13px;margin-top:4px"><strong>Messaging Strategy:</strong> Pure social proof play for the skeptical newcomer. Removes purchase anxiety by showing volume of happy customers. Low-risk, high-trust entry point.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segment 5 (Curious Newcomer)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-04 | Static | "Powder vs. Liquid" — Competitor Differentiation</div>
+<div class="ad-body">
+<div class="angle">Angle: Product Superiority</div>
+<img src="images/lm04.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Lion's Mane - Powder vs Liquid">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Side-by-side comparison graphic. Left: generic mushroom powder jar with "20–70% starch filler" callout. Right: Lifecykel liquid extract bottle with "Less than 1.5% starch. Double-extracted. Kakadu Plum infused." Clean infographic style.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Your mushroom powder is mostly starch. Ours isn't."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Messaging Strategy:</strong> Directly educates the audience already in the mushroom category but buying competitor powder products. Converts them by showing Lifecykel's objective superiority in bioavailability and purity.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 4 (Longevity Seeker)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-05 | Video (30s) | "The Science Behind the Drop" — Education</div>
+<div class="ad-body">
+<div class="angle">Angle: Science & Credibility</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Macro shot of mushroom fruiting body growing in timelapse. Text: "This mushroom rewires your brain. Here's how."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Mushroom timelapse growth, curiosity hook<br>3–10s: Quick animated explainer — Lion's Mane stimulates NGF (Nerve Growth Factor), supports neuroplasticity<br>10–18s: Double-extraction process visualised — "We extract what powders can't"<br>18–24s: Customer testimonial overlay — "I felt the difference in week two"<br>24–30s: Product hero + "TGA Listed. Australian Made." + CTA</p>
+<p style="font-size:13px;margin-top:8px"><strong>Visual Direction:</strong> Documentary-style mixed with motion graphics. Nature footage + lab/science aesthetic. Green and gold colour palette.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 4 (Longevity Seeker)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-06 | Static | "From $1.17/day" — Value Proposition</div>
+<div class="ad-body">
+<div class="angle">Angle: Affordability / Value</div>
+<img src="images/lm06.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Lion's Mane - Value">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Lifestyle flat-lay — Lion's Mane bottle alongside daily items (coffee, journal, phone). Price breakdown overlaid: "$34.95 ÷ 30 days = $1.17/day for laser focus." Aspirational but accessible. Warm, Instagram-worthy styling.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Sharper focus than your $7 coffee. For $1.17 a day."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Messaging Strategy:</strong> Overcomes the price objection by reframing daily cost vs. daily coffee. Makes the product feel like a no-brainer investment for the price-conscious newcomer.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 5 (Curious Newcomer), 6 (Stressed Professional)</p>
+</div>
+</div>
+</div>
+
+<!-- CORDYCEPS -->
+<div class="tab-content" id="tab-cordyceps">
+<h3 style="font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Cordyceps — 5 Creative Concepts</h3>
+
+<div class="ad-card">
+<div class="ad-header">CO-01 | Static | "Ditch the Pre-Workout" — Category Disruption</div>
+<div class="ad-body">
+<div class="angle">Angle: Natural Pre-Workout Alternative</div>
+<img src="images/co01.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Cordyceps - Ditch Pre-Workout">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Bold, high-energy. Cordyceps bottle front-and-centre with gym/outdoor backdrop. Crossed-out synthetic pre-workout tub in background. Text overlay: "No jitters. No crash. Just go." Punchy, athletic aesthetic.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Your pre-workout is lying to you."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Messaging Strategy:</strong> Targets active performers fed up with synthetic stimulant crashes. Positions Cordyceps as the clean, natural alternative that serious athletes trust.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segment 3 (Active Performer)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-02 | Video (15s) | "5AM Club" — Morning Energy Ritual</div>
+<div class="ad-body">
+<div class="angle">Angle: Morning Activation</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Alarm at 5:00 AM. Hand reaches for Cordyceps bottle instead of phone. Text: "The activation mushroom."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: 5AM alarm, reach for Cordyceps<br>3–7s: Drop into water, quick stretch, lacing up shoes<br>7–12s: Running/cycling/gym montage — energetic, powerful<br>12–15s: Product shot — "Switched on. Energised. Ready." + Shop Now</p>
+<p style="font-size:13px;margin-top:8px"><strong>Visual Direction:</strong> Pre-dawn blue tones transitioning to golden sunrise. High-energy editing pace. Athletic, aspirational but attainable.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 3 (Active Performer), 6 (Stressed Professional)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-03 | Static | "The Activation Mushroom" — Benefit-Led Hero</div>
+<div class="ad-body">
+<div class="angle">Angle: Core Benefit — Energy</div>
+<img src="images/co03.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Cordyceps - Activation Mushroom">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Product hero on natural wood surface with morning light. Clean typography: "CORDYCEPS — The Activation Mushroom." Benefit bullets as elegant text: Energy. Stamina. Endurance. Kakadu Plum badge and 4.9★ rating.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Some mushrooms calm you down. This one fires you up."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 3 (Active Performer), 5 (Curious Newcomer)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-04 | Video (30s) | "461 Reviews, One Verdict" — Testimonial Mashup</div>
+<div class="ad-body">
+<div class="angle">Angle: Social Proof / UGC-Style</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Text on screen: "We asked 461 reviewers one question..." then cut to rapid-fire review screenshots scrolling.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Hook question<br>3–15s: Scrolling real review snippets — "game changer," "replaced my pre-workout," "feel incredible"<br>15–22s: Product reveal — dropper into smoothie, energetic person working out<br>22–30s: "4.9★ from 461 Australians. Try it risk-free." + CTA</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segment 5 (Curious Newcomer)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-05 | Static | "Stack It" — Cross-Sell Bundle</div>
+<div class="ad-body">
+<div class="angle">Angle: Product Stacking</div>
+<img src="images/co05.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Cordyceps - Stack It">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Flat-lay showing Cordyceps + Lion's Mane together on a workout bench or desk. "The Focus + Energy Stack." Visual flow chart: AM → Cordyceps (energy) → PM → Lion's Mane (focus). Clean, instructional but aspirational.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Pair these two and watch what happens to your week."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 3 (Active Performer)</p>
+</div>
+</div>
+</div>
+
+<!-- REISHI -->
+<div class="tab-content" id="tab-reishi">
+<h3 style="font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Reishi — 5 Creative Concepts</h3>
+
+<div class="ad-card">
+<div class="ad-header">RE-01 | Static | "The Off Switch" — Stress Relief</div>
+<div class="ad-body">
+<div class="angle">Angle: Calm & Stress Relief</div>
+<img src="images/re01.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Reishi - The Off Switch">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Moody, warm evening scene. Person on couch with tea, Reishi bottle nearby. Soft ambient lighting, candles. Text overlay: "Your nervous system called. It wants a break." Muted earth tones, cozy aesthetic.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "You don't need another glass of wine. You need this."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Messaging Strategy:</strong> Positions Reishi as the healthy alternative to alcohol for stress relief. Targets the overwhelmed professional who reaches for wine at 7pm. Provocative but empathetic hook.</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 2 (Wellness Woman), 6 (Stressed Professional)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-02 | Video (15s) | "The Zen Mushroom" — Bedtime Ritual</div>
+<div class="ad-body">
+<div class="angle">Angle: Sleep Quality</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Overhead shot of chamomile tea being made. Reishi dropper enters frame. Text: "The Zen Mushroom. For people who forgot how to sleep."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Tea + Reishi dropper (satisfying ASMR sound)<br>3–7s: Person reading in bed, eyes getting heavy<br>7–12s: Deep, peaceful sleep shot. Alarm goes off — they wake refreshed, stretching<br>12–15s: "Deep sleep. Every night. Naturally." Product shot + CTA</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 2 (Wellness Woman), 6 (Stressed Professional)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-03 | Static | "523 Australians Sleep Better" — Social Proof</div>
+<div class="ad-body">
+<div class="angle">Angle: Reviews + Sleep Benefit</div>
+<img src="images/re03.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Reishi - Social Proof">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Dreamy, soft-focus background (bedroom scene). Product hero with "4.9★ from 523 reviews" prominent. Three customer quote callouts about improved sleep. Peaceful colour palette — deep greens, warm golds.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "523 Australians finally sleep through the night. Here's their secret."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 5 (Curious Newcomer), 2 (Wellness Woman)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-04 | Static | "Morning Lion's Mane. Evening Reishi." — Stack</div>
+<div class="ad-body">
+<div class="angle">Angle: AM/PM Ritual Stack</div>
+<img src="images/re04.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Reishi - AM/PM Stack">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Two-panel image. Left panel (bright, morning light): Lion's Mane + coffee. Right panel (warm, evening glow): Reishi + tea. "The 24-Hour Mushroom Stack." Clean, editorial layout with Lifecykel branding.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Focus by day. Calm by night. Two drops. Zero compromises."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 6 (Stressed Professional)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-05 | Video (20s) | "Post-Yoga Unwind" — Lifestyle</div>
+<div class="ad-body">
+<div class="angle">Angle: Holistic Wellness Ritual</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Woman rolling up yoga mat, serene studio setting. Text: "After the practice, the real work begins."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Post-yoga scene, calm energy<br>3–10s: Making evening tea, adding Reishi extract. "The Zen Mushroom for your deepest calm"<br>10–17s: Cozy evening scenes — journaling, reading, peaceful expression<br>17–20s: "Reishi. Your ritual for letting go." + CTA</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segment 2 (Wellness Woman)</p>
+</div>
+</div>
+</div>
+
+<!-- SHILAJIT -->
+<div class="tab-content" id="tab-shilajit">
+<h3 style="font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Shilajit — 5 Creative Concepts</h3>
+
+<div class="ad-card">
+<div class="ad-header">SH-01 | Static | "The Destroyer of Weakness" — Bold Claim</div>
+<div class="ad-body">
+<div class="angle">Angle: Ancient Potency / Masculine Energy</div>
+<img src="images/sh01.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Shilajit - Destroyer of Weakness">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Dark, bold aesthetic. Shilajit resin jar hero-lit against mountain/rock backdrop. Gold typography: "The Destroyer of Weakness." 84+ minerals callout. Fulvic acid highlight. Premium, masculine energy — think luxury supplement meets ancient wisdom.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "84 minerals. Forged in mountains. Built for men who refuse to slow down."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segment 3 (Active Performer — male skew)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-02 | Video (20s) | "From Mountain to Spoon" — Origin Story</div>
+<div class="ad-body">
+<div class="angle">Angle: Provenance & Purity</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Aerial drone shot of remote mountain range. Text: "Hidden in these rocks is something your body is starving for."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Mountain aerial shot, intrigue hook<br>3–8s: Close-up of resin seeping from rock crevice. "Wild-harvested. Pure. Unprocessed."<br>8–14s: Lab testing footage + "Third-party tested every batch"<br>14–18s: Person dissolving resin in morning coffee, confident stride out the door<br>18–20s: "Lifecykel Shilajit. Strength from the source." + CTA</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 3 (Active Performer)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-03 | Static | "Not All Shilajit Is Equal" — Education</div>
+<div class="ad-body">
+<div class="angle">Angle: Quality Differentiation</div>
+<img src="images/sh03.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Shilajit - Not All Equal">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Comparison infographic. Left: "Cheap Shilajit — powder form, fillers, untested, origin unknown." Right: "Lifecykel Shilajit — pure resin, wild-harvested, third-party tested, TGA facility." Check marks vs. X marks. Clean, authoritative design.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "Before you buy Shilajit, read this."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 4 (Longevity Seeker)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-04 | Static | "Worth Every Cent" — Premium Value</div>
+<div class="ad-body">
+<div class="angle">Angle: Premium Justified</div>
+<img src="images/sh04.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Shilajit - Worth Every Cent">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Luxury product photography — Shilajit jar on marble surface, warm backlighting. "$3.07/day for 84+ minerals, fulvic acid, and unstoppable energy." Price breakdown vs. daily coffee comparison. Aspirational, premium feel.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "You spend $6 on coffee that gives you jitters. Spend $3.07 on something that actually builds you."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 3 (Active Performer), 6 (Stressed Professional)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-05 | Video (15s) | "The Morning Spoon" — Ritual</div>
+<div class="ad-body">
+<div class="angle">Angle: Simple Daily Ritual</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Extreme close-up: tiny spoon scooping thick, dark resin from jar. ASMR texture. Text: "0.25 grams. That's all it takes."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Satisfying resin scoop close-up<br>3–7s: Dissolving in warm coffee — swirling, dissolving<br>7–12s: Man taking first sip, energised posture, walks out into morning sun<br>12–15s: "Shilajit Pure Resin. The Destroyer of Weakness." + CTA</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 3 (Active Performer), 5 (Curious Newcomer)</p>
+</div>
+</div>
+</div>
+
+<!-- LIPOSOMAL NR+ -->
+<div class="tab-content" id="tab-liponr">
+<h3 style="font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:16px">Liposomal NR+ — 5 Creative Concepts</h3>
+
+<div class="ad-card">
+<div class="ad-header">NR-01 | Static | "Your Cells Are Aging. Fight Back." — Anti-Aging Science</div>
+<div class="ad-body">
+<div class="angle">Angle: Cellular Longevity</div>
+<img src="images/nr01.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Liposomal NR+ - Anti-Aging">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Split image — microscope-style cell visualisation on one side, product bottle on the other. "NAD+ declines 50% by age 50. Liposomal NR+ replenishes it." Scientific but accessible. TGA Listed badge prominent. Clean, clinical-meets-premium aesthetic.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "After 30, your cells start running out of fuel. Here's how to refill the tank."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segment 4 (Longevity Seeker)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-02 | Video (30s) | "The NAD+ Explainer" — Education</div>
+<div class="ad-body">
+<div class="angle">Angle: Science Education</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Text on screen: "What if you could recharge every cell in your body?" Animated cell graphic pulsing with energy.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Curiosity hook + cell animation<br>3–12s: Motion graphic explaining NAD+ — "It powers 500+ metabolic reactions. But it declines with age."<br>12–20s: "Liposomal NR+ is a direct precursor to NAD+. Liposomal delivery means 10x better absorption than capsules."<br>20–26s: Real person — "I have energy I haven't felt in years"<br>26–30s: "TGA Listed. Australian Made. Try risk-free." + CTA</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 4 (Longevity Seeker)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-03 | Static | "Capsules Can't Compete" — Format Superiority</div>
+<div class="ad-body">
+<div class="angle">Angle: Liposomal vs. Capsule</div>
+<img src="images/nr03.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Liposomal NR+ - Capsules Cant Compete">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Comparison graphic — capsules crumbling in stomach acid on left ("Most NAD+ supplements: destroyed in digestion"). Liposomal bubble protecting NR+ molecule on right ("Lifecykel: protected delivery straight to your cells"). Visual metaphor for bioavailability.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "You're flushing your NAD+ supplement down the toilet. Literally."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 1 (Biohacker), 4 (Longevity Seeker)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-04 | Static | "TGA Listed. Not TikTok Listed." — Trust</div>
+<div class="ad-body">
+<div class="angle">Angle: Regulatory Credibility</div>
+<img src="images/nr04.jpg" style="width:100%;border-radius:8px;margin-bottom:12px;object-fit:cover;max-height:260px" alt="Liposomal NR+ - TGA Listed">
+<p style="font-size:13px"><strong>Visual Direction:</strong> Clean, authoritative design. Large TGA logo and AUST L number. Product bottle with "Manufactured in a licensed Australian facility" callout. Subtle Australian flag element. "Not all supplements are equal. Ours is government-registered." Trustworthy, no-nonsense.</p>
+<p style="font-size:13px;margin-top:8px"><strong>Hook:</strong> "TGA Listed. Not TikTok listed. There's a difference."</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segments 4 (Longevity Seeker), 2 (Wellness Woman)</p>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-05 | Video (15s) | "The Longevity Drop" — Ritual</div>
+<div class="ad-body">
+<div class="angle">Angle: Daily Longevity Ritual</div>
+<p style="font-size:13px"><strong>Hook (0–3s):</strong> Close-up of liquid being measured with teaspoon. Text: "5ml. Once a day. That's your longevity protocol."</p>
+<p style="font-size:13px;margin-top:8px"><strong>Script Outline:</strong><br>0–3s: Measuring 5ml, satisfying pour<br>3–8s: Person taking it on empty stomach, calm morning routine<br>8–12s: Same person — hiking, playing with grandkids, sharp and vibrant<br>12–15s: "Liposomal NR+. Age is just biology. And biology can be upgraded." + CTA</p>
+<p style="font-size:13px;margin-top:4px"><strong>Target Audience:</strong> Segment 4 (Longevity Seeker)</p>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ==================== SECTION 6: AD COPY ==================== -->
+<section id="copy" style="background:var(--white)">
+<div class="container">
+<div class="section-header">
+<div class="num">6</div>
+<h2>Ad Copy</h2>
+<p>Complete Meta ad copy for every creative concept — primary text, headline, description, and CTA</p>
+</div>
+
+<!-- Copy Tabs -->
+<div class="tabs" id="copyTabs">
+<button class="active" onclick="switchCopyTab('copy-lionsmane')">Lion's Mane</button>
+<button onclick="switchCopyTab('copy-cordyceps')">Cordyceps</button>
+<button onclick="switchCopyTab('copy-reishi')">Reishi</button>
+<button onclick="switchCopyTab('copy-shilajit')">Shilajit</button>
+<button onclick="switchCopyTab('copy-liponr')">Liposomal NR+</button>
+</div>
+
+<!-- LION'S MANE COPY -->
+<div class="tab-content active" id="tab-copy-lionsmane">
+
+<div class="ad-card">
+<div class="ad-header">LM-01 | "The Brain's Best Friend"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>You're not lazy. You're not "getting old." Your brain is just starving for the right fuel.<br><br>Lion's Mane mushroom has been used for centuries to sharpen the mind — and Lifecykel's liquid extract is the purest way to take it. Double-extracted. Infused with Australian Kakadu Plum. Less than 1.5% starch (most powders are 20–70% filler).<br><br>Drop it in your morning coffee. Feel the fog lift by Tuesday.<br><br>🍄 Australia's #1 Lion's Mane Extract<br>⭐ 4.8 stars from 1,754 reviews<br>🇦🇺 TGA-listed. Made in Australia.<br><br>Your brain deserves better than brain fog. Give it what it's been asking for.</div>
+<div class="field"><div class="field-label">Headline</div>Sharper Focus Starts With One Drop</div>
+<div class="field"><div class="field-label">Description</div>Australia's #1 Lion's Mane. Double-extracted. From $1.17/day.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-02 | "Morning Ritual" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>The best morning routines are the simplest ones.<br><br>One dropper of Lifecykel Lion's Mane into your coffee. That's it. No pills. No powder mess. No thinking required.<br><br>Just clearer thinking, deeper focus, and a mind that actually cooperates with your ambitions.<br><br>Thousands of Australians have already made the switch. The only question is — what took you so long?<br><br>🍄 Double-extracted with Kakadu Plum<br>☕ Mixes into coffee, tea, or smoothies<br>📦 Free shipping over $100</div>
+<div class="field"><div class="field-label">Headline</div>The 5-Second Upgrade Your Morning Is Missing</div>
+<div class="field"><div class="field-label">Description</div>Drop. Stir. Focus. Lion's Mane liquid extract by Lifecykel.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-03 | "1,754 Five-Star Reviews"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>We didn't write this ad. 1,754 Australians did.<br><br>"Finally something that actually works." ⭐⭐⭐⭐⭐<br>"I can feel the difference in my focus within a week." ⭐⭐⭐⭐⭐<br>"I've tried powders — this liquid extract is next level." ⭐⭐⭐⭐⭐<br><br>Lifecykel Lion's Mane is Australia's most-reviewed mushroom extract for a reason. It works. And it works fast.<br><br>Try it risk-free. If you don't feel the difference, we'll refund every cent.</div>
+<div class="field"><div class="field-label">Headline</div>1,754 Reviews. 4.8 Stars. Zero Regrets.</div>
+<div class="field"><div class="field-label">Description</div>Australia's highest-rated Lion's Mane extract. See why.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-04 | "Powder vs. Liquid"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Most mushroom supplements are mostly starch. Seriously.<br><br>Independent testing shows typical mushroom powders contain 20–70% starch filler. That's a lot of money for very little mushroom.<br><br>Lifecykel's Lion's Mane liquid extract? Less than 1.5% starch. Double-extracted for maximum potency. Infused with Kakadu Plum for enhanced vitamin C absorption.<br><br>When you're paying for Lion's Mane, you should actually be getting Lion's Mane.<br><br>🔬 Double-extraction process<br>🌿 Australian Kakadu Plum infused<br>✅ TGA-listed facility</div>
+<div class="field"><div class="field-label">Headline</div>Your Mushroom Powder Is 70% Starch. Ours Isn't.</div>
+<div class="field"><div class="field-label">Description</div>Less than 1.5% starch. Double-extracted. Liquid format.</div>
+<div class="field"><div class="field-label">CTA</div>Learn More</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-05 | "The Science Behind the Drop" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>There's a mushroom that makes your brain grow new connections. It's not magic — it's neuroscience.<br><br>Lion's Mane stimulates Nerve Growth Factor (NGF), which supports neuroplasticity — your brain's ability to form new neural pathways, learn faster, and think clearer.<br><br>But here's the thing: not all Lion's Mane is created equal. Powders lose potency in processing. Lifecykel's double-extraction captures the full spectrum of compounds your brain actually needs.<br><br>This isn't a trend. It's been used for centuries. We just made it absurdly easy to take.<br><br>One dropper. Every morning. Your brain handles the rest.</div>
+<div class="field"><div class="field-label">Headline</div>The Mushroom That Rewires Your Brain</div>
+<div class="field"><div class="field-label">Description</div>Lion's Mane liquid extract. Double-extracted. Science-backed.</div>
+<div class="field"><div class="field-label">CTA</div>Learn More</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">LM-06 | "From $1.17/day"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Your large flat white costs $6.50 and gives you jitters by 2pm.<br><br>Lifecykel Lion's Mane costs $1.17/day and gives you focus that doesn't crash, clarity that doesn't fade, and a brain that actually keeps up with your to-do list.<br><br>Drop it INTO that coffee. Now you've got the best of both worlds.<br><br>$34.95 for a month of sharper thinking. That's less than a single dinner out.<br><br>🍄 4.8★ from 1,754 Australians<br>🇦🇺 Australian made & TGA-listed<br>💰 Save 20% with subscription</div>
+<div class="field"><div class="field-label">Headline</div>$1.17/Day for Laser Focus. No Brainer.</div>
+<div class="field"><div class="field-label">Description</div>Sharper focus than your $7 coffee. Lion's Mane extract from $34.95.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- CORDYCEPS COPY -->
+<div class="tab-content" id="tab-copy-cordyceps">
+
+<div class="ad-card">
+<div class="ad-header">CO-01 | "Ditch the Pre-Workout"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>That neon-coloured pre-workout in your gym bag? It's giving you jitters, heart palpitations, and a crash that kills your afternoon.<br><br>Cordyceps has fuelled athletes for thousands of years. No beta-alanine tingles. No caffeine spikes. Just clean, sustained energy that switches on when you need it and fades naturally.<br><br>Lifecykel's liquid Cordyceps extract is double-extracted with Kakadu Plum, so you're getting maximum potency in every drop. Add it to water, coffee, or your pre-workout shake.<br><br>⚡ 4.9★ from 461 Australians<br>🍄 The Activation Mushroom<br>🇦🇺 Made in Australia. TGA facility.</div>
+<div class="field"><div class="field-label">Headline</div>Natural Energy That Won't Let You Down</div>
+<div class="field"><div class="field-label">Description</div>The clean pre-workout 461 Australians swear by.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-02 | "5AM Club" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>5AM alarm. Cold air. Every excuse in the world to stay in bed.<br><br>But you don't hit snooze. You reach for the dropper. One squeeze of Lifecykel Cordyceps into your water. And something shifts.<br><br>Not a buzz. Not a spike. Just... activation. Like every cell in your body remembered what it was built for.<br><br>The Activation Mushroom isn't hype. It's 461 five-star reviews from Australians who stopped making excuses and started showing up.<br><br>Tomorrow morning, reach for the dropper. See what happens.</div>
+<div class="field"><div class="field-label">Headline</div>The Activation Mushroom. Feel It In Minutes.</div>
+<div class="field"><div class="field-label">Description</div>Cordyceps liquid extract. Switched on. Energised. Ready.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-03 | "The Activation Mushroom"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Some mushrooms calm you down. This one fires you up.<br><br>Cordyceps — the activation mushroom — has been used by elite athletes and high-performers for centuries to unlock natural energy, stamina, and endurance.<br><br>Lifecykel's liquid extract delivers it in the most bioavailable form possible. Double-extracted. Kakadu Plum infused. Less than 1.5% starch.<br><br>One dropper in your morning drink. That's your activation protocol.<br><br>Energy. Stamina. Endurance. From $1.17/day.</div>
+<div class="field"><div class="field-label">Headline</div>Switched On. Energised. Ready to Go.</div>
+<div class="field"><div class="field-label">Description</div>Cordyceps liquid extract. Australia's activation mushroom.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-04 | "461 Reviews, One Verdict" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>We could tell you Cordyceps works. Or we could let 461 Australians do it for us.<br><br>"Replaced my pre-workout entirely." ⭐⭐⭐⭐⭐<br>"Game changer for my morning runs." ⭐⭐⭐⭐⭐<br>"I feel incredible — no crash, no jitters." ⭐⭐⭐⭐⭐<br><br>4.9 stars. 461 reviews. From everyday athletes to gym junkies to people who just want to feel switched on again.<br><br>If almost 500 people agree, maybe it's worth trying.</div>
+<div class="field"><div class="field-label">Headline</div>461 Five-Star Reviews. One Mushroom.</div>
+<div class="field"><div class="field-label">Description</div>See why Australians are switching to Cordyceps extract.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">CO-05 | "Stack It"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>What happens when you pair the focus mushroom with the energy mushroom?<br><br>Your week happens. On your terms.<br><br>🧠 Lion's Mane — for deep focus, clarity, and cognitive edge<br>⚡ Cordyceps — for clean energy, stamina, and activation<br><br>Together, they're the stack that biohackers, founders, and athletes are building their mornings around.<br><br>Drop both into your coffee. One gives you the focus. The other gives you the fire. Together, they give you an unfair advantage.<br><br>Save when you buy the pair.</div>
+<div class="field"><div class="field-label">Headline</div>The Focus + Energy Stack. Built For Winners.</div>
+<div class="field"><div class="field-label">Description</div>Lion's Mane + Cordyceps. The ultimate morning upgrade.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- REISHI COPY -->
+<div class="tab-content" id="tab-copy-reishi">
+
+<div class="ad-card">
+<div class="ad-header">RE-01 | "The Off Switch"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>7pm. Long day. You've earned a glass of wine. Right?<br><br>What if there was something better? Something that actually calmed your nervous system instead of just numbing it?<br><br>Reishi — the zen mushroom — has been used for thousands of years to bring the body back to balance. Not drowsy. Not sedated. Just... calm. The kind of calm where you can actually enjoy your evening instead of just surviving it.<br><br>Drop Lifecykel's Reishi extract into your evening tea. Feel your shoulders drop. Let the day go.<br><br>🍵 The Zen Mushroom<br>⭐ 4.9★ from 523 reviews<br>🌙 Your new evening ritual</div>
+<div class="field"><div class="field-label">Headline</div>Calm Without the Hangover</div>
+<div class="field"><div class="field-label">Description</div>Reishi — the zen mushroom. Your nervous system will thank you.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-02 | "The Zen Mushroom" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>You've forgotten how to sleep. Not the lying-in-bed part. The deep, restorative, wake-up-feeling-human part.<br><br>Reishi doesn't knock you out like melatonin. It doesn't leave you groggy. It teaches your body how to wind down — the way it was supposed to.<br><br>Add it to your evening tea. Make it a ritual. Within a week, you'll remember what real rest feels like.<br><br>523 Australians already know. 4.9 stars. The proof is in the sleep.</div>
+<div class="field"><div class="field-label">Headline</div>Deep Sleep. Every Night. Naturally.</div>
+<div class="field"><div class="field-label">Description</div>The Zen Mushroom. Drop it in your tea and let the day go.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-03 | "523 Australians Sleep Better"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>523 Australians didn't just review Reishi. They wrote love letters to it.<br><br>"I sleep so much deeper now." ⭐⭐⭐⭐⭐<br>"My anxiety has dropped noticeably." ⭐⭐⭐⭐⭐<br>"This is my non-negotiable evening ritual." ⭐⭐⭐⭐⭐<br><br>Lifecykel Reishi — The Zen Mushroom. Double-extracted. Kakadu Plum infused. Made in Australia.<br><br>Your evening deserves more than scrolling and stress. Give it something that actually works.</div>
+<div class="field"><div class="field-label">Headline</div>523 Australians Sleep Better With This</div>
+<div class="field"><div class="field-label">Description</div>4.9★ Reishi extract. The calm you've been craving.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-04 | "Morning Lion's Mane. Evening Reishi."</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Morning: Lion's Mane in your coffee. Sharp. Focused. Unstoppable.<br>Evening: Reishi in your tea. Calm. Grounded. At peace.<br><br>Two mushrooms. Two moments. One complete daily ritual.<br><br>The 24-hour mushroom stack is how thousands of Australians are mastering the art of being ON when it matters and OFF when it counts.<br><br>🧠 AM — Lion's Mane for focus and clarity<br>🌙 PM — Reishi for calm and deep sleep<br><br>Together, they're the reset button your body has been begging for.</div>
+<div class="field"><div class="field-label">Headline</div>Focus By Day. Calm By Night. Two Drops.</div>
+<div class="field"><div class="field-label">Description</div>The 24-hour mushroom stack. Lion's Mane + Reishi.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">RE-05 | "Post-Yoga Unwind" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>You just rolled up the mat. The body is loose. The mind is almost there.<br><br>Almost.<br><br>Close the loop with Reishi. Lifecykel's Zen Mushroom takes that post-practice peace and carries it through your entire evening. No racing thoughts at midnight. No 3am wakeups. Just deep, earned rest.<br><br>🧘‍♀️ Pairs perfectly with your wellness practice<br>🍵 Add to evening tea or golden milk<br>⭐ 4.9★ from 523 reviews<br><br>Your practice doesn't end on the mat. Let Reishi carry it home.</div>
+<div class="field"><div class="field-label">Headline</div>The Ritual After the Ritual</div>
+<div class="field"><div class="field-label">Description</div>Reishi — The Zen Mushroom. For people who take calm seriously.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SHILAJIT COPY -->
+<div class="tab-content" id="tab-copy-shilajit">
+
+<div class="ad-card">
+<div class="ad-header">SH-01 | "The Destroyer of Weakness"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>For centuries, Himalayan communities called it "The Destroyer of Weakness."<br><br>Shilajit — a mineral-rich resin forged over millennia in remote mountain rock — contains 84+ trace minerals, fulvic acid, humic acid, amino acids, and antioxidants your body is starving for.<br><br>This isn't a capsule full of filler. It's raw, wild-harvested resin. Scooped with a tiny spoon. Dissolved in your morning coffee. And felt in your bones by noon.<br><br>Lifecykel's Shilajit is purified in-house. Third-party tested every single batch. No shortcuts.<br><br>💪 84+ essential minerals<br>🏔 Wild-harvested from pristine mountains<br>🔬 Third-party tested for purity & potency</div>
+<div class="field"><div class="field-label">Headline</div>84 Minerals. Forged in Mountains. Built For You.</div>
+<div class="field"><div class="field-label">Description</div>Shilajit Pure Resin. The Destroyer of Weakness.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-02 | "From Mountain to Spoon" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Hidden in the crevices of some of the world's most remote mountains, a dark, tar-like substance seeps from the rock. It takes centuries to form. And it contains more minerals than almost anything on Earth.<br><br>Lifecykel sources this raw resin, purifies it in licensed Australian facilities, and tests every batch for purity, potency, and safety.<br><br>No capsules. No powders. No fillers. Just pure Shilajit resin — the way nature made it.<br><br>0.25 grams. One tiny spoon. Dissolved in warm water or coffee. That's your daily mineral reset.<br><br>🏔 Wild-harvested<br>🇦🇺 Purified in Australia<br>🔬 Third-party tested every batch</div>
+<div class="field"><div class="field-label">Headline</div>From Mountain Rock to Your Morning Cup</div>
+<div class="field"><div class="field-label">Description</div>Wild-harvested Shilajit. Pure resin. Third-party tested.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-03 | "Not All Shilajit Is Equal"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>The Shilajit market is a mess. Powders cut with fillers. Capsules with unknown origins. Amazon listings with zero testing.<br><br>Before you buy Shilajit from anywhere, ask three questions:<br><br>1. Is it pure resin or diluted powder?<br>2. Is every batch third-party tested?<br>3. Do they show you the test results?<br><br>Lifecykel answers yes to all three. Pure resin form. Wild-harvested. Purified and tested in licensed Australian facilities. AUST L registered.<br><br>You wouldn't put untested fuel in a Ferrari. Don't put untested supplements in your body.</div>
+<div class="field"><div class="field-label">Headline</div>Three Questions Before You Buy Shilajit</div>
+<div class="field"><div class="field-label">Description</div>Pure resin. Third-party tested. Australian purified. The real deal.</div>
+<div class="field"><div class="field-label">CTA</div>Learn More</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-04 | "Worth Every Cent"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>$92 for a jar of black goo? Let us explain.<br><br>That jar contains 30 serves of wild-harvested Shilajit resin packed with 84+ minerals, fulvic acid, and more trace elements than any multivitamin on the shelf.<br><br>That's $3.07/day. Less than your morning long black.<br><br>Except your coffee doesn't rebuild cellular energy. Doesn't support testosterone. Doesn't deliver 84 minerals your body can't produce on its own.<br><br>This isn't expensive. Your current supplement stack that doesn't work — THAT's expensive.<br><br>💰 $3.07/day for cellular-level vitality<br>☕ Less than your daily coffee<br>🔬 Every batch third-party tested</div>
+<div class="field"><div class="field-label">Headline</div>$3.07/Day. 84+ Minerals. Zero Fillers.</div>
+<div class="field"><div class="field-label">Description</div>Lifecykel Shilajit Pure Resin. Worth every single cent.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">SH-05 | "The Morning Spoon" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>0.25 grams. One tiny spoon. The smallest action with the biggest impact on your day.<br><br>Scoop. Dissolve in warm coffee or water. Drink. Done.<br><br>Within days, you'll notice the difference. More energy that doesn't crash. More clarity that doesn't fade. More drive that doesn't need a pep talk.<br><br>The Destroyer of Weakness isn't a marketing line. It's what happens when you give your body 84+ minerals it's been missing.<br><br>⭐ 4.9★ from 106 reviews<br>🏔 Wild-harvested pure resin<br>🇦🇺 Purified in Australia</div>
+<div class="field"><div class="field-label">Headline</div>One Spoon. 84 Minerals. Unstoppable Energy.</div>
+<div class="field"><div class="field-label">Description</div>Shilajit Pure Resin. The simplest upgrade you'll ever make.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- LIPOSOMAL NR+ COPY -->
+<div class="tab-content" id="tab-copy-liponr">
+
+<div class="ad-card">
+<div class="ad-header">NR-01 | "Your Cells Are Aging. Fight Back."</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Here's a fact that should terrify you: your NAD+ levels drop by 50% between age 30 and 50.<br><br>NAD+ is the molecule that powers over 500 metabolic reactions in your body. It repairs DNA. It fuels cellular energy. It keeps your mitochondria firing. Without enough of it, everything slows down — energy, cognition, recovery, skin, everything.<br><br>Lifecykel Liposomal NR+ is a direct precursor to NAD+. And the liposomal delivery system means it actually reaches your cells — unlike capsules that get destroyed in stomach acid.<br><br>5ml a day. On an empty stomach. That's your longevity protocol.<br><br>🧬 TGA Listed (AUST L 489281)<br>🇦🇺 Made in a licensed Australian facility<br>🔬 Liposomal delivery for superior absorption</div>
+<div class="field"><div class="field-label">Headline</div>Refuel Your Cells. Rewind Your Age.</div>
+<div class="field"><div class="field-label">Description</div>Liposomal NR+. TGA-listed. The NAD+ boost your cells are begging for.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-02 | "The NAD+ Explainer" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>What if you could recharge every cell in your body? You can. Here's the science.<br><br>NAD+ (Nicotinamide Adenine Dinucleotide) is the master molecule of cellular energy. It declines with age — and that decline is linked to fatigue, cognitive slowdown, poor recovery, and accelerated aging.<br><br>Nicotinamide Riboside (NR) is a direct precursor that replenishes NAD+ levels. But most NR supplements come in capsules that get destroyed during digestion.<br><br>Lifecykel wraps NR in a liposomal shield — a protective lipid bubble that survives your gut and delivers the molecule directly to your cells.<br><br>The result? Energy you haven't felt in years. Cognition that keeps up. Recovery that impresses.<br><br>TGA-listed. Australian-made. Science you can feel.</div>
+<div class="field"><div class="field-label">Headline</div>The NAD+ Molecule Powering 500+ Reactions</div>
+<div class="field"><div class="field-label">Description</div>Liposomal NR+ by Lifecykel. Science-backed cellular energy.</div>
+<div class="field"><div class="field-label">CTA</div>Learn More</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-03 | "Capsules Can't Compete"</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Your NAD+ capsule has a dirty secret: most of it never reaches your cells.<br><br>Stomach acid destroys unprotected NR during digestion. You're paying premium prices for a molecule that mostly ends up in your toilet.<br><br>Lifecykel's Liposomal NR+ uses lipid-encapsulated delivery — the same technology used in advanced pharmaceuticals. Each molecule is wrapped in a protective bubble that survives digestion and delivers NR directly to your cells.<br><br>Same molecule. Dramatically better absorption. Actually worth the investment.<br><br>📊 Liposomal = superior bioavailability<br>💊 No more wasted capsules<br>🧬 TGA Listed. Australian made.</div>
+<div class="field"><div class="field-label">Headline</div>Stop Wasting Money on NAD+ Capsules</div>
+<div class="field"><div class="field-label">Description</div>Liposomal NR+. Protected delivery. Every molecule counts.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-04 | "TGA Listed. Not TikTok Listed."</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>Anyone can sell a supplement on the internet. Very few can get it TGA-listed.<br><br>TGA listing means the Australian government has reviewed the product for quality, safety, and manufacturing standards. It means the facility is licensed. It means there's accountability.<br><br>Lifecykel Liposomal NR+ is TGA-listed (AUST L 489281). Manufactured in a licensed Australian facility. Every claim backed by regulatory scrutiny.<br><br>In a world of influencer-promoted mystery powders, this is the supplement that earned its credentials the hard way.<br><br>Your health deserves more than a TikTok recommendation.</div>
+<div class="field"><div class="field-label">Headline</div>Government-Listed. Not Influencer-Listed.</div>
+<div class="field"><div class="field-label">Description</div>TGA-listed Liposomal NR+. AUST L 489281. Australian made.</div>
+<div class="field"><div class="field-label">CTA</div>Learn More</div>
+</div>
+</div>
+</div>
+
+<div class="ad-card">
+<div class="ad-header">NR-05 | "The Longevity Drop" (Video)</div>
+<div class="ad-body">
+<div class="copy-block">
+<div class="field"><div class="field-label">Primary Text</div>5ml. Once a day. That's your longevity protocol.<br><br>Not a fistful of capsules. Not a complicated stack. One teaspoon of Lifecykel Liposomal NR+ on an empty stomach, 15 minutes before breakfast.<br><br>That single daily action supports cellular energy production, healthy aging, DNA repair, cognitive function, and exercise performance.<br><br>Age is just biology. And biology can be upgraded.<br><br>🧬 Direct NAD+ precursor<br>🛡 Liposomal delivery for maximum absorption<br>⭐ 4.9★ from real customers<br>🇦🇺 TGA-listed. Australian made.</div>
+<div class="field"><div class="field-label">Headline</div>5ml/Day. Your Cells Will Know the Difference.</div>
+<div class="field"><div class="field-label">Description</div>Liposomal NR+. The simplest longevity investment you'll make.</div>
+<div class="field"><div class="field-label">CTA</div>Shop Now</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<div style="background:var(--green-dark);color:rgba(255,255,255,.7);padding:32px;text-align:center;font-size:12px">
+<p style="color:#fff;font-weight:600;font-size:14px;margin-bottom:4px">Lifecykel Australia — Meta Ads Strategy</p>
+<p>Prepared for Web Profits | $20,000/mo starting budget | 2.5x ROAS target | Australia DTC</p>
+<p style="margin-top:12px;font-size:11px">Assumptions: Budget allocation ratios are based on product market potential analysis and review volume as proxy for demand. Scaling thresholds assume a minimum 7-day learning phase. Creative volume assumes in-house design capacity of 12–16 assets/week. All product claims reference information available on lifecykel.com as of strategy date.</p>
+</div>
+
+<script>
+// Smooth scroll
+document.querySelectorAll('nav a').forEach(a=>{
+a.addEventListener('click',function(e){
+e.preventDefault();
+const t=document.querySelector(this.getAttribute('href'));
+if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
+this.classList.add('active');
+});
+});
+
+// Active nav on scroll
+window.addEventListener('scroll',()=>{
+const sections=document.querySelectorAll('section');
+let current='';
+sections.forEach(s=>{
+if(window.scrollY>=s.offsetTop-100)current=s.getAttribute('id');
+});
+document.querySelectorAll('nav a').forEach(a=>{
+a.classList.remove('active');
+if(a.getAttribute('href')==='#'+current)a.classList.add('active');
+});
+});
+
+// Product concept tabs
+function switchTab(id){
+document.querySelectorAll('#concepts .tab-content').forEach(t=>t.classList.remove('active'));
+document.getElementById('tab-'+id).classList.add('active');
+document.querySelectorAll('#productTabs button').forEach(b=>b.classList.remove('active'));
+event.target.classList.add('active');
+}
+
+// Copy tabs
+function switchCopyTab(id){
+document.querySelectorAll('#copy .tab-content').forEach(t=>t.classList.remove('active'));
+document.getElementById('tab-'+id).classList.add('active');
+document.querySelectorAll('#copyTabs button').forEach(b=>b.classList.remove('active'));
+event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
